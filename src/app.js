@@ -15,8 +15,8 @@ const cookieSession = require('cookie-session');
 require('../config/passport');
 const passport = require('passport');
 const Message = require('./models/Message');
-const { local_authentication } = require('./middleware/auth');
-const { auth } = require('./middleware/auth');
+const { localAuthenticationMiddleware } = require('./middleware/authentication');
+const { isAuthenticatedMiddleware } = require('./middleware/authentication');
 //
 const { userJoin, getCurrentUser, userLeave, getRoomUsers } = require('./utils/chatUsers'); // for chat
 const serializeMessage = require('./utils/serializeMessage'); // for chat
@@ -49,7 +49,7 @@ app.use(cookieSessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 // local authentification
-app.use(local_authentication);
+app.use(localAuthenticationMiddleware);
 
 // swagger configuration // start
 const options = {
@@ -76,11 +76,11 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 // swagger configuration // end
 
 app.use('/auth', authRoutes);
-app.use('/comics', auth, comicsRoutes);
-app.use('/character', auth, characterRoutes);
-app.use('/publisher', auth, publisherRoutes);
+app.use('/comics', isAuthenticatedMiddleware, comicsRoutes);
+app.use('/character', isAuthenticatedMiddleware, characterRoutes);
+app.use('/publisher', isAuthenticatedMiddleware, publisherRoutes);
 
-app.use('/chathistory', auth, async (req, res, next) => {
+app.use('/chathistory', isAuthenticatedMiddleware, async (req, res, next) => {
   const { room } = req.query;
   if (req.user) {
     const chathistory = await Message.find({
@@ -118,7 +118,7 @@ io.use(wrap(cookieParser())); // const token = req.cookies.jwt;
 io.use(wrap(cookieSessionMiddleware));
 io.use(wrap(passport.initialize()));
 io.use(wrap(passport.session()));
-io.use(wrap(local_authentication));
+io.use(wrap(localAuthenticationMiddleware));
 
 io.use((socket, next) => {
   if (socket.request.user || socket.request.appContext) {

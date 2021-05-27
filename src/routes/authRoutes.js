@@ -75,7 +75,7 @@ router.get('/me', (req, res) => {
     });
   }
 
-  if (req.appContext) {
+  if (req.appContext && req.appContext.user) {
     return res.json({
       email: req.appContext.user.email,
       displayName: req.appContext.user.displayName,

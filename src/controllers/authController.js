@@ -20,11 +20,9 @@ const auth_signup_post = async (req, res) => {
 
     await user.save();
 
-    const token = jwt.sign({ id: user._id }, config.get('jwtSecret'), {
-      expiresIn: '1h',
-    });
+    const token = jwt.sign({ id: user._id }, config.get('jwtSecret') /* , { expiresIn: '1h' } */);
 
-    res.cookie('jwt', token, { httpOnly: true, maxAge: 60 * 60 * 1000 }); // 1h in milliseconds
+    res.cookie('jwt', token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 }); // 1 year in milliseconds
 
     res.status(201).json({
       email: user.email,
@@ -51,11 +49,9 @@ const auth_login_post = async (req, res) => {
       return res.status(400).json({ message: 'Password is wrong' });
     }
 
-    const token = jwt.sign({ id: user._id }, config.get('jwtSecret'), {
-      expiresIn: '1h',
-    });
+    const token = jwt.sign({ id: user._id }, config.get('jwtSecret') /* , { expiresIn: '1h' } */);
 
-    res.cookie('jwt', token, { httpOnly: true, maxAge: 60 * 60 * 1000 }); // 1h in milliseconds
+    res.cookie('jwt', token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 }); // 1year in milliseconds
 
     res.json({
       email: user.email,

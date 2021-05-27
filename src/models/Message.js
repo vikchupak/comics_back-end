@@ -5,7 +5,7 @@ const messageSchema = new Schema({
     email: { type: String, required: true },
     displayName: String,
   },
-  time: Date, // це робитимуть сокети
+  time: Date, // this will do sockets
   type: { type: String, required: true },
   data: {
     text: String,
