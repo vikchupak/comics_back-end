@@ -111,7 +111,7 @@ const comics_put = async (req, res) => {
       req.params.id,
       {
         title: req.body.title,
-        logo: `http://localhost:5000/${req.file.path}`,
+        logo: `${process.env.BACK_END_DOMAIN}/${req.file.path}`,
         publisher: req.body.publisher,
         author: req.body.author,
         characters: req.body.characters,

@@ -3,10 +3,12 @@ const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
 const mongoose = require('mongoose');
-const config = require('config');
+const dotenv = require('dotenv');
 const cors = require('cors');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+// set process.env variables available anywhere
+dotenv.config({ path: './config/.env' });
 //
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc'); // npm i swagger-jsdoc@6.1.0 for common js imports to work
@@ -31,16 +33,19 @@ const publisherRoutes = require('./routes/publisherRoutes');
 const app = express();
 
 // important! to set origin with credentials
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: process.env.FRONT_END_DOMAIN, credentials: true }));
 app.use(express.json({ extended: true }));
 app.use(cookieParser());
 // to allow brosers to request data from this folder
 app.use('/public', express.static(path.join(__dirname, '../public')));
-app.use(morgan('dev'));
+
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
 const cookieSessionMiddleware = cookieSession({
   maxAge: 60 * 60 * 1000, // 1h in miliseconds
-  keys: [config.get('cookieKey')],
+  keys: [process.env.COOKIE_KEY],
 });
 
 // authentification
@@ -62,7 +67,7 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:5000',
+        url: process.env.BACK_END_DOMAIN,
       },
     ],
   },
@@ -106,7 +111,7 @@ const PORT = process.env.PORT || 5000;
 const server = http.createServer(app); // server.listen instead of app.listen
 const io = socketio(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: process.env.FRONT_END_DOMAIN,
     credentials: true,
   },
 });
@@ -139,21 +144,6 @@ io.on('connection', (socket) => {
 
     socket.join(user.room);
 
-    // const Welcome = () => {
-    //   const serializedMessage = serializeMessage(
-    //     { email: 'admin@gmail.com', displayName: botName },
-    //     'text',
-    //     { text: `Welcome to discussion 🎃!\n${user.room}!` },
-    //     user.room
-    //   );
-    //   // save to db
-    //   // new Message(serializedMessage).save();
-    //   return serializedMessage;
-    // };
-
-    // // Welcome current user
-    // socket.emit('message', Welcome());
-
     const broadcastOthers = () => {
       const serializedMessage = serializeMessage(
         { email: 'admin@gmail.com', displayName: botName },
@@ -161,7 +151,7 @@ io.on('connection', (socket) => {
         { text: `${user.username} has joined the chat.` },
         user.room
       );
-      // new Message(serializedMessage).save();
+
       return serializedMessage;
     };
 
@@ -204,7 +194,7 @@ io.on('connection', (socket) => {
         { text: `${user.username} has left the chat.` },
         user.room
       );
-      // new Message(serializedMessage).save();
+
       return serializedMessage;
     };
 
@@ -241,7 +231,7 @@ app.use((error, req, res, next) => {
 
 async function start() {
   try {
-    await mongoose.connect(config.get('mongoUri'), {
+    await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,

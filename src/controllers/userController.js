@@ -43,7 +43,7 @@ const user_post = async (req, res) => {
   try {
     console.log(req.body);
     const user = new User({
-      avatar: `http://localhost:5000/${req.file.path}`,
+      avatar: `${process.env.BACK_END_DOMAIN}/${req.file.path}`,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       credentials: req.body.credentials,
@@ -63,7 +63,7 @@ const user_put = async (req, res) => {
     const user = await User.findByIdAndUpdate(
       req.params.id,
       {
-        image: `http://localhost:5000/${req.file.path}`,
+        image: `${process.env.BACK_END_DOMAIN}/${req.file.path}`,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
       },

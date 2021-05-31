@@ -1,4 +1,3 @@
-const config = require('config');
 const jsonwebtoken = require('jsonwebtoken');
 const User = require('../models/User');
 
@@ -9,7 +8,7 @@ const localAuthenticationMiddleware = async (req, res, next) => {
     try {
       let user;
       // decoding jwt failere possible => error.message: jwt malformed
-      const decodedToken = jsonwebtoken.verify(token, config.get('jwtSecret'));
+      const decodedToken = jsonwebtoken.verify(token, process.env.JWT_SECRET);
 
       if (decodedToken) {
         // user not found (null) possible

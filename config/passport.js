@@ -1,6 +1,5 @@
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const passport = require('passport');
-const config = require('config');
 const UserOauth = require('../src/models/UserOauth');
 
 // "mongoUri": "mongodb://localhost:27017/comicsWebStore",
@@ -8,8 +7,8 @@ const UserOauth = require('../src/models/UserOauth');
 passport.use(
   new GoogleStrategy(
     {
-      clientID: config.get('googleClientId'),
-      clientSecret: config.get('googleClientSecret'),
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: '/auth/google/callback',
     },
     async (accessToken, refreshToken, profile, done) => {
