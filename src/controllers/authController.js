@@ -24,7 +24,7 @@ const auth_signup_post = async (req, res) => {
     res.cookie('jwt', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year in milliseconds // or null possible
-      SameSite: 'none',
+      sameSite: 'none',
       secure: true,
     });
 
@@ -58,7 +58,7 @@ const auth_login_post = async (req, res) => {
     res.cookie('jwt', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 365, // 1year in milliseconds // or null possible
-      SameSite: 'none',
+      sameSite: 'none',
       secure: true,
     });
 
