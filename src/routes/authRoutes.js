@@ -55,7 +55,12 @@ router.get('/logout', (req, res) => {
     // local logout
     const token = req.cookies.jwt;
     if (token) {
-      res.cookie('jwt', '', { maxAge: 0 });
+      res.cookie('jwt', '', {
+        httpOnly: true,
+        maxAge: 0,
+        sameSite: 'none',
+        secure: true,
+      });
     }
     res.json({ message: 'Logout successful' });
   } catch (e) {
