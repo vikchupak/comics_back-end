@@ -28,7 +28,7 @@ router.get(
   (req, res) => {
     // this redirect makes the magic!!!
     // it sets cookies on port:3000, not 5000!!!
-    res.redirect('http://localhost:3000');
+    res.redirect(process.env.FRONT_END_DOMAIN);
   }
 );
 
