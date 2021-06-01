@@ -21,7 +21,12 @@ const auth_signup_post = async (req, res) => {
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET /* , { expiresIn: '1h' } */);
 
-    res.cookie('jwt', token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 }); // 1 year in milliseconds
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year in milliseconds // or null possible
+      SameSite: 'none',
+      secure: true,
+    });
 
     res.status(201).json({
       email: user.email,
@@ -50,7 +55,12 @@ const auth_login_post = async (req, res) => {
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET /* , { expiresIn: '1h' } */);
 
-    res.cookie('jwt', token, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 }); // 1year in milliseconds
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365, // 1year in milliseconds // or null possible
+      SameSite: 'none',
+      secure: true,
+    });
 
     res.json({
       email: user.email,
