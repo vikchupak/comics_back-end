@@ -26,6 +26,8 @@ router.get(
   '/google/callback',
   passport.authenticate('google', { failireRedirect: '/auth/login' }),
   (req, res) => {
+    // res.end();
+    // console.log('res: ', res);
     // this redirect makes the magic!!!
     // it sets cookies on port:3000, not 5000!!!
     res.redirect(process.env.FRONT_END_DOMAIN);
