@@ -53,6 +53,7 @@ const cookieSessionMiddleware = cookieSession({
 });
 
 // authentification
+app.set('trust proxy', 1);
 app.use(cookieSessionMiddleware);
 // google authentification
 app.use(passport.initialize());
