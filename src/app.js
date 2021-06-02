@@ -44,10 +44,9 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const cookieSessionMiddleware = cookieSession({
-  // maxAge: 60 * 60 * 1000, // 1h in miliseconds
+  maxAge: 60 * 60 * 1000, // 1h in miliseconds
   keys: [process.env.COOKIE_KEY],
   sameSite: 'none',
-  // domain: process.env.BACK_END_DOMAIN,
   secure: true,
   httpOnly: true,
 });
