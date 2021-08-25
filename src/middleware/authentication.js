@@ -4,11 +4,13 @@ const User = require('../models/User');
 const localAuthenticationMiddleware = async (req, res, next) => {
   const token = req.cookies.jwt;
 
+  // console.log('req.cookies: ', req.cookies)
+
   if (token) {
     try {
       let user;
-      // decoding jwt failere possible => error.message: jwt malformed
-      const decodedToken = jsonwebtoken.verify(token, process.env.JWT_SECRET);
+      // decoding jwt failere possible => error.message: jwt malformed // secret or public key must be provided. test.env
+      const decodedToken = jsonwebtoken.verify(token, 'comics app');
 
       if (decodedToken) {
         // user not found (null) possible
@@ -18,11 +20,11 @@ const localAuthenticationMiddleware = async (req, res, next) => {
       if (user) {
         req.appContext = { user };
       }
+
     } catch (e) {
-      console.log('error: ', e.message);
+      // console.log('error: ', e.message);
     }
   }
-  // test appContext.user not exist // block scheme // test coverage
   next();
 };
 
@@ -33,10 +35,10 @@ const isAuthenticatedMiddleware = async (req, res, next) => {
     const isAuthenticatedByGoogle = req.isAuthenticated(); // req.user
 
     if (isAuthenticatedByGoogle) {
-      return next(); // return important here
+     return next(); // return important here
     }
 
-    // local auth // null safety ?.
+    // local auth
     if (req.appContext && req.appContext.user) {
       return next(); // return important here
     }

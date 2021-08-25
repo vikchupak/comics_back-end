@@ -2,9 +2,8 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const passport = require('passport');
 const UserOauth = require('../src/models/UserOauth');
 
-// "mongoUri": "mongodb://localhost:27017/comicsWebStore",
-
 passport.use(
+  // dependensy injection
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,

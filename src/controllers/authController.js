@@ -53,7 +53,7 @@ const auth_login_post = async (req, res) => {
       return res.status(400).json({ message: 'Password is wrong' });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET /* , { expiresIn: '1h' } */);
+    const token = jwt.sign({ id: user._id }, 'comics app'); // JWT_SECRET=comics app
 
     res.cookie('jwt', token, {
       httpOnly: true,

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "test": "jest",
+    "test": "NODE_ENV=test jest",
     "start": "node ./src/app.js",
     "dev": "nodemon ./src/app.js"
   },
@@ -18,7 +18,9 @@
     "eslint-plugin-prettier": "^3.3.1",
     "jest": "^27.0.1",
     "nodemon": "^2.0.7",
-    "prettier": "^2.2.1"
+    "passport-mock-strategy": "^2.0.0",
+    "prettier": "^2.2.1",
+    "supertest": "^6.1.6"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

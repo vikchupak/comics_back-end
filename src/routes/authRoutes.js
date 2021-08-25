@@ -22,19 +22,9 @@ router.get('/local-all', authController.auth_local_all_get);
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 // /auth/google/callback
-router.get(
-  '/google/callback',
-  passport.authenticate('google', { failireRedirect: '/auth/login' }),
+router.get('/google/callback', passport.authenticate('google', { failireRedirect: '/auth/login' }),
   (req, res) => {
-    // res.cookie('jwt', token, {
-    //   httpOnly: true,
-    //   maxAge: 1000 * 60 * 60 * 24 * 365, // 1year in milliseconds // or null possible
-    //   sameSite: 'none',
-    //   secure: true,
-    // });
-    console.log('req: ', req);
-    // this redirect makes the magic!!!
-    // it sets cookies on port:3000, not 5000!!!
+    // this redirect makes the magic!!! // it sets cookies on port:3000, not 5000!!!
     res.redirect(process.env.FRONT_END_DOMAIN);
   }
 );
