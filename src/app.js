@@ -3,13 +3,11 @@ const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+const dotenv = require('dotenv').config();
 const cors = require('cors');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
-// set process.env variables available anywhere
-dotenv.config({ path: './config/.env' });
-//
+
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc'); // npm i swagger-jsdoc@6.1.0 for common js imports to work
 //

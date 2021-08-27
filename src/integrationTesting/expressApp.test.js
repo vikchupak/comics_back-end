@@ -1,3 +1,4 @@
+const dotenv = require('dotenv').config();
 const request = require('supertest');
 const express = require('express');
 const passport = require('passport');
@@ -119,7 +120,7 @@ describe('express app with middlewares', () => {
 
         User.findOne.mockResolvedValue(dbUser);
 
-        const token = jwt.sign({ id: dbUser._id }, 'comics app');
+        const token = jwt.sign({ id: dbUser._id }, process.env.JWT_SECRET);
 
         const response = await request(app)
             .post('/auth/login')
@@ -163,7 +164,7 @@ describe('express app with middlewares', () => {
 
     test('protected route test with local athorization', async function() {
 
-        const token = jwt.sign({ id: dbUser._id }, 'comics app');
+        const token = jwt.sign({ id: dbUser._id }, process.env.JWT_SECRET);
 
         await request(app)
         .get('/protected-route')

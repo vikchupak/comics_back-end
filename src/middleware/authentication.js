@@ -9,8 +9,8 @@ const localAuthenticationMiddleware = async (req, res, next) => {
   if (token) {
     try {
       let user;
-      // decoding jwt failere possible => error.message: jwt malformed // secret or public key must be provided. test.env
-      const decodedToken = jsonwebtoken.verify(token, 'comics app');
+      // decoding jwt failere possible => error.message: jwt malformed
+      const decodedToken = jsonwebtoken.verify(token, process.env.JWT_SECRET);
 
       if (decodedToken) {
         // user not found (null) possible
